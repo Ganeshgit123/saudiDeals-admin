@@ -1,0 +1,154 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <h2 class="mb-3 mb-md-0">{{ 'Dashboard' | translate }}</h2>
+    </div>
+</div>
+
+<div class="col-12 col-xl-12 stretch-card">
+    <div class="row flex-grow">
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"Total Users" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getData[0]?.userCount?.userCount}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"ActiveUsers" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getData[0]?.userCount?.active}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"InActiveUsers" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getData[0]?.userCount?.inActive}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"TotalMotorAds" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getMotorsList[0]?.totalPost}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"ActiveMotorAds" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getMotorsList[0]?.activePost}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"ExpiredMotorAds" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getMotorsList[0]?.expiredPost}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"TotalPropertyAds" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getPropList[0]?.totalPost}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"ActivePropertyAds" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getPropList[0]?.activePost}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-between align-items-baseline">
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-12 col-xl-8">
+                                <h6 class="card-title mb-0">{{"ExpiredPropertyAds" | translate}}</h6>
+                            </div>
+                            <div class="col-6 col-md-12 col-xl-4">
+                                <h3 class="mb-0">{{getPropList[0]?.expiredPost}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

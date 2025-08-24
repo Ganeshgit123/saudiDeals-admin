@@ -1,0 +1,36 @@
+.post_head{
+    font-weight: 500;
+    padding: 10px 0;
+}
+.card-img-top{
+    padding: 30px;
+}
+
+.back_ul{
+    background: #8fb64124;
+    padding: 30px 40px;
+    border-radius: 6px;
+}
+.summary_ul{
+    padding-left: 0;
+    padding: 10px 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.summary_ul li{
+    display: inline-block;
+    list-style-type: none;
+}
+.summary_ul li.left_side_cont{
+    color: var(--text-dark-color);
+    font-size: var(--heading-h6);
+    font-weight: 500;
+    vertical-align: top;
+    width: 30%;
+}
+.summary_ul li.right_side_cont{
+    color: var(--text-dark-color);
+    font-size: var(--heading-h6);
+    font-weight: 500;
+    width: 70%;
+}

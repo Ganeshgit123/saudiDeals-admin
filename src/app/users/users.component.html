@@ -1,0 +1,151 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <h2 class="mb-3 mb-md-0">{{"Users" | translate}}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>{{"Search" | translate}}</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="{{'Search' | translate}}" #input>
+        </mat-form-field>
+    </div>
+    <div class="col-md-2 city_col">
+        <select #select (change)="onChangeUserTypeFilter(select.value)" class="form-control">
+            <option selected="" disabled>{{'Status' | translate}}</option>
+            <option value="1">{{"Activated" | translate}}</option>
+            <option value="0">{{"Deactivated" | translate}}</option>
+        </select>
+    </div>
+    <div class="col-md-6"></div>
+</div>
+
+<div class="mat-elevation-z8">
+    <table class="table" mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{"S.No" | translate}}</th>
+            <td mat-cell *matCellDef="let element; let i = index;"> {{matPaginator.pageSize * matPaginator.pageIndex + i
+                + 1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="userName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"User Name" | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="mobileNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Mobile Number" | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{element.countryCode}} {{element.mobileNumber}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Email" | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Notification">
+            <th mat-header-cell *matHeaderCellDef> {{"Notification" | translate}} </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-button (click)="sendNotify(element.id,Content)" class="send_btn">
+                    {{"SendNotification" | translate}}
+                </button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> {{"Action" | translate}} </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-button (click)="deleteUser(element)" class="dele_btn" *ngIf="element.active == 1">
+                    <img src="assets/images/delete_icon.svg"
+                        onmouseover="this.src='assets/images/delete_hover_icon.svg'"
+                        onmouseout="this.src='assets/images/delete_icon.svg'">
+                </button>
+                <button mat-button (click)="deleteUser(element)" class="send_btn" *ngIf="element.active == 0">
+                    {{"Un Block" | translate}}
+                </button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="remarks">
+            <th mat-header-cell *matHeaderCellDef> {{"Remarks" | translate}} </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-button (click)="addRemarkValue(element.id,Remarks)" class="send_btn"
+                    *ngIf="element.remarks == null || element.remarks == ''">
+                    {{"addRemark" | translate}}
+                </button>
+                <button mat-button (click)="editRemarkValue(element,Remarks)" class="send_btn"
+                    *ngIf="!(element.remarks == null || element.remarks == '')">
+                    {{"showEditRemark" | translate}}
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="userType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"User Type" | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.userType}} </td>
+        </ng-container> -->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell text-center" colspan="4">{{"No data found" | translate}}</td>
+        </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 25]" showFirstLastButtons></mat-paginator>
+
+</div>
+
+<ng-template #Content role="document" let-modal="close">
+    <div class="modal-header">
+        <h5 class="modal-title">{{"Push Notification" | translate}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body p-3">
+        <form [formGroup]="notifyForm">
+            <div class="form-group">
+                <label for="name">{{"NotifyMsg" | translate}}</label>
+                <textarea class="form-control" formControlName="message" rows="4" cols="50"
+                    [ngClass]="{ 'is-invalid': submitted && notifyF['message'].errors}"></textarea>
+            </div>
+            <div *ngIf="submitted && notifyF['message'].errors" class="invalid-feedback">
+                <div *ngIf="notifyF['message'].errors['required']">{{"MsgRequired" | translate}}</div>
+            </div>
+        </form>
+        <div class="text-right">
+            <button type="submit" class="btn btn-own" (click)="onSubmitData()">{{"Send" |translate}}</button>
+            <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
+                translate}}</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #Remarks role="document" let-modal="close">
+    <div class="modal-header">
+        <h5 class="modal-title">{{"Remarks" | translate}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body p-3">
+        <form [formGroup]="remarkForm">
+            <div class="form-group">
+                <label for="name">{{"Remarks" | translate}}</label>
+                <textarea class="form-control" formControlName="remarks" rows="4" cols="50"
+                    [ngClass]="{ 'is-invalid': submitted && remarkF['remarks'].errors}"></textarea>
+            </div>
+            <div *ngIf="submitted && remarkF['remarks'].errors" class="invalid-feedback">
+                <div *ngIf="remarkF['remarks'].errors['required']">{{"Required" | translate}}</div>
+            </div>
+        </form>
+        <div class="text-right">
+            <button type="submit" class="btn btn-own" (click)="onRemarkSubmit()">{{"Send" |translate}}</button>
+            <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
+                translate}}</button>
+        </div>
+    </div>
+</ng-template>

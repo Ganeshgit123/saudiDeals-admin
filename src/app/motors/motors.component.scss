@@ -1,0 +1,25 @@
+.cdk-column-title {
+  max-width: 300px;
+  /* feel free to include any other value */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-column-title:hover {
+  cursor: pointer;
+  color: var(--main-color) !important;
+}
+
+a:hover {
+  color: var(--main-dark-color);
+}
+
+select {
+  width: auto !important;
+}
+
+.city_col {
+  position: relative;
+  top: 1.2rem;
+}

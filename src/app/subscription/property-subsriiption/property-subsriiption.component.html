@@ -1,0 +1,193 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <h2 class="mb-3 mb-md-0">{{"Property Packages List" | translate}}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <mat-form-field>
+            <mat-label>{{"Search" | translate}}</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="{{'Search' | translate}}" #input>
+        </mat-form-field>
+    </div>
+    <div class="col-md-6">
+        <div style="text-align:end;" class="add_popup_btn">
+            <a href="javascript:void(0);" class="btn btn-own mb-2" (click)="openModal(content)">
+                {{"Add Package" | translate}}
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="mat-elevation-z8">
+    <table class="table" mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{"S.No" | translate}}</th>
+            <td mat-cell *matCellDef="let element; let i = index;"> {{matPaginator.pageSize * matPaginator.pageIndex + i
+                + 1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Name" | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Price" | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Description" | translate}}</th>
+            <td mat-cell *matCellDef="let element" [innerHtml]="element.description"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="subscriptionsTime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Time Frame" | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.subscriptionsTime}} {{"days" | translate}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalPost">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Total Post" | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.totalPost}} {{"ads" | translate}}</td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="userType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"User Type" | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.userType == 'USER'">Owner</span>    
+            <span *ngIf="element.userType == 'DEALER'">Agent/Dealer</span>    
+            </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="rowActionToggle">
+            <th mat-header-cell *matHeaderCellDef>{{"Status" | translate}}</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+                <button (change)="changeStatus(element)" class="tog_btn">
+                    <label class="switch">
+                        <input unchecked type="checkbox" *ngIf="element.active !== 1">
+                        <input checked type="checkbox" *ngIf="element.active == 1">
+                        <span class="slider"></span>
+                    </label>
+                </button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="rowActionIcon">
+            <th mat-header-cell *matHeaderCellDef>{{"Action" | translate}}</th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-button (click)="editSubsc(element,content)" class="edit_btn">
+                    <img src="assets/images/edit_icon.svg" onmouseover="this.src='assets/images/edit_hover_icon.svg'"
+                        onmouseout="this.src='assets/images/edit_icon.svg'">
+                </button>
+                <button mat-button (click)="deleteSubsc(element.id)" class="dele_btn">
+                    <img src="assets/images/delete_icon.svg"
+                        onmouseover="this.src='assets/images/delete_hover_icon.svg'"
+                        onmouseout="this.src='assets/images/delete_icon.svg'">
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell text-center" colspan="6">{{"No data found" | translate}}</td>
+        </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 25]" showFirstLastButtons></mat-paginator>
+</div>
+
+<ng-template #content role="document" let-modal="close">
+    <div class="modal-header">
+        <h5 class="modal-title" *ngIf="!isEdit">{{"Add Package" | translate}}</h5>
+        <h5 class="modal-title" *ngIf="isEdit">{{"Edit Package" | translate}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body p-3">
+        <form [formGroup]="propertySubForm">
+            <div class="row">
+                <!-- <div class="col-md-3">
+                    <div class="form-group">
+                        <label>{{"Select Type of User" | translate}}*</label>
+                        <select class="form-control" formControlName="userType" 
+                            [ngClass]="{ 'is-invalid': submitted && propF['userType'].errors}">
+                            <option value="USER">{{"Owner" | translate}}</option>
+                            <option value="DEALER">{{"Agent/Dealer" | translate}}</option>
+                        </select>
+                        <div *ngIf="submitted && propF['userType'].errors" class="invalid-feedback">
+                            <div *ngIf="propF['userType'].errors['required']">{{'User Type is required' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">{{"Package Name" | translate}}*</label>
+                        <input type="text" class="form-control" placeholder="{{'Package Name' | translate}}"
+                            formControlName="name" [ngClass]="{ 'is-invalid': submitted && propF['name'].errors}">
+                        <div *ngIf="submitted && propF['name'].errors" class="invalid-feedback">
+                            <div *ngIf="propF['name'].errors['required']">{{'Name is required' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="price">{{"Price" | translate}}*</label>
+                        <input type="number" class="form-control" placeholder="{{'Price' | translate}}"
+                            formControlName="price" [ngClass]="{ 'is-invalid': submitted && propF['price'].errors}">
+                        <div *ngIf="submitted && propF['price'].errors" class="invalid-feedback">
+                            <div *ngIf="propF['price'].errors['required']">{{'Price is required' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="subscriptionsTime">{{"TimeFrameDaywise" | translate}}*</label>
+                        <input type="number" class="form-control" placeholder="{{'EnterHowManyDaysValid' | translate}}"
+                            formControlName="subscriptionsTime"
+                            [ngClass]="{ 'is-invalid': submitted && propF['subscriptionsTime'].errors}">
+                        <div *ngIf="submitted && propF['subscriptionsTime'].errors" class="invalid-feedback">
+                            <div *ngIf="propF['subscriptionsTime'].errors['required']">{{'Time Frame is required' |
+                                translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="totalPost">{{"Total Ads" | translate}}*</label>
+                        <input type="number" class="form-control" placeholder="{{'Total Ads' | translate}}"
+                            formControlName="totalPost"
+                            [ngClass]="{ 'is-invalid': submitted && propF['totalPost'].errors}">
+                        <div *ngIf="submitted && propF['totalPost'].errors" class="invalid-feedback">
+                            <div *ngIf="propF['totalPost'].errors['required']">{{'Total Ads is required' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">{{"Description" | translate}}</label>
+                <div class="bord_line" [ngClass]="{ 'is-invalid': submitted && propF.description.errors }">
+                    <angular-editor id="editor1" formControlName="description" [config]="editorConfig"></angular-editor>
+                </div>
+                <div *ngIf="submitted && propF.description.errors" class="invalid-feedback">
+                    <div *ngIf="propF.description.errors.required">{{"Description is required"}}</div>
+                </div>
+            </div>
+        </form>
+        <div class="text-right">
+            <button type="submit" class="btn btn-own" (click)="onSubmitData()">{{"Save" |
+                translate}}</button>
+            <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
+                translate}}</button>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,20 @@
+// Breadcrumb color variations
+@use 'sass:color';
+@use '../variables' as *;
+
+@mixin breadcrumb-inverse-variant($color) {
+  background: color.adjust($color, $lightness: -25%);
+  border-color: $color;
+
+  .breadcrumb-item {
+    color: $color;
+
+    &:before {
+      color: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+}

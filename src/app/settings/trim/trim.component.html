@@ -1,0 +1,149 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <h2 class="mb-3 mb-md-0">{{"Trim" | translate}}</h2>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field>
+                    <mat-label>{{"Search" | translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="{{'Search' | translate}}" #input>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <div style="text-align:end;" class="add_popup_btn">
+                    <a href="javascript:void(0);" class="btn btn-own mb-2" (click)="openModal(content)">
+                        {{"Add Trim" | translate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #content role="document" let-modal="close">
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="!isEdit">{{"Add Model" | translate}}</h5>
+                <h5 class="modal-title" *ngIf="isEdit">{{"Edit Model" | translate}}</h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-3">
+                <form [formGroup]="trimForm">
+                    <div class="form-group">
+                        <label>{{"SelectMake" | translate}}</label>
+                        <select class="form-control" formControlName="makeId" #make
+                            [ngClass]="{ 'is-invalid': submitted && trimf['makeId'].errors}"
+                            (change)='onModelChange(make.value)'>
+                            <option *ngFor="let item of makeList" value="{{item.id}}">{{item.name}}</option>
+                        </select>
+                        <div *ngIf="submitted && trimf['makeId'].errors" class="invalid-feedback">
+                            <div *ngIf="trimf['makeId'].errors['required']">{{'MakeRequired' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{"SelectModel" | translate}}</label>
+                        <select class="form-control" formControlName="modelId"
+                            [ngClass]="{ 'is-invalid': submitted && trimf['modelId'].errors}">
+                            <option *ngFor="let item of modelList" value="{{item.id}}">{{item.modelName}}</option>
+                        </select>
+                        <div *ngIf="submitted && trimf['modelId'].errors" class="invalid-feedback">
+                            <div *ngIf="trimf['modelId'].errors['required']">{{'Model is required' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">{{"selectTrim" | translate}}</label>
+                        <select class="form-control" formControlName="enName" #trim
+                            [ngClass]="{ 'is-invalid': submitted && trimf['enName'].errors}"
+                            (change)='onTrimGet(trim.value)'>
+                            <option *ngFor="let item of getTrimList" value="{{item.enName}}">{{item.enName}}</option>
+                        </select>
+                        <div *ngIf="submitted && trimf['enName'].errors" class="invalid-feedback">
+                            <div *ngIf="trimf['enName'].errors['required']">{{'TrimRequired' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-own" (click)="onSubmitData()">{{"Save" |
+                        translate}}</button>
+                    <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
+                        translate}}</button>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="mat-elevation-z8">
+            <table class="table" mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{"S.No" | translate}}</th>
+                    <td mat-cell *matCellDef="let element; let i = index;"> {{matPaginator.pageSize *
+                        matPaginator.pageIndex + i
+                        + 1}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="brandName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Make Name" | translate}}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.brandName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="modelName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Model Name" | translate}}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.modelName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="enName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"TrimNameEN" | translate}}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.enName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="arName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"TrimNameAR" | translate}}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.arName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="rowActionToggle">
+                    <th mat-header-cell *matHeaderCellDef>{{"Status" | translate}}</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <button (change)="changeStatus(element)" class="tog_btn">
+                            <label class="switch">
+                                <input unchecked type="checkbox" *ngIf="element.active !== 1">
+                                <input checked type="checkbox" *ngIf="element.active == 1">
+                                <span class="slider"></span>
+                            </label>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="rowActionIcon">
+                    <th mat-header-cell *matHeaderCellDef>{{"Action" | translate}}</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <button mat-button (click)="editTrim(element,content)" class="edit_btn">
+                            <img src="assets/images/edit_icon.svg"
+                                onmouseover="this.src='assets/images/edit_hover_icon.svg'"
+                                onmouseout="this.src='assets/images/edit_icon.svg'">
+                        </button>
+                        <button mat-button (click)="deleteTrim(element.id)" class="dele_btn">
+                            <img src="assets/images/delete_icon.svg"
+                                onmouseover="this.src='assets/images/delete_hover_icon.svg'"
+                                onmouseout="this.src='assets/images/delete_icon.svg'">
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center" colspan="7">{{"No data found" | translate}}</td>
+                </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 25]" showFirstLastButtons></mat-paginator>
+
+        </div>
+    </div>
+</div>

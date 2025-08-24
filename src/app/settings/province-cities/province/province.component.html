@@ -1,0 +1,118 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field>
+                    <mat-label>{{"Search" | translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="{{'Search' | translate}}" #input>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <div style="text-align:end;" class="add_popup_btn">
+                    <a href="javascript:void(0);" class="btn btn-own mb-2" (click)="openModal(content)">
+                        {{"Add Province" | translate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #content role="document" let-modal="close">
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="!isEdit">{{"Add Province" | translate}}</h5>
+                <h5 class="modal-title" *ngIf="isEdit">{{"Edit Province" | translate}}</h5>
+                <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-3">
+                <form [formGroup]="provinceForm">
+                    <div class="form-group">
+                        <label for="name">{{"Province Name" | translate}}</label>
+                        <input type="text" class="form-control" placeholder="{{'Province Name' | translate}}"
+                            formControlName="name" [ngClass]="{ 'is-invalid': submitted && provincef['name'].errors}">
+                        <div *ngIf="submitted && provincef['name'].errors" class="invalid-feedback">
+                            <div *ngIf="provincef['name'].errors['required']">{{'Name is required' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="arName">{{"ProvinceNameArabic" | translate}}</label>
+                        <input type="text" class="form-control" placeholder="{{'ProvinceNameArabic' | translate}}"
+                            formControlName="arName"
+                            [ngClass]="{ 'is-invalid': submitted && provincef['arName'].errors}">
+                        <div *ngIf="submitted && provincef['arName'].errors" class="invalid-feedback">
+                            <div *ngIf="provincef['arName'].errors['required']">{{'Name is required' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-own" (click)="onSubmitData()">{{"Save" |
+                        translate}}</button>
+                    <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
+                        translate}}</button>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="mat-elevation-z8">
+            <table class="table" mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{"S.No" | translate}}</th>
+                    <td mat-cell *matCellDef="let element; let i = index;"> {{matPaginator.pageSize *
+                        matPaginator.pageIndex + i
+                        + 1}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Province Name" | translate}}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="arName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"ProvinceNameArabic" | translate}}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.arName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="rowActionToggle">
+                    <th mat-header-cell *matHeaderCellDef>{{"Status" | translate}}</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <button (change)="changeStatus(element)" class="tog_btn">
+                            <label class="switch">
+                                <input unchecked type="checkbox" *ngIf="element.active !== 1">
+                                <input checked type="checkbox" *ngIf="element.active == 1">
+                                <span class="slider"></span>
+                            </label>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="rowActionIcon">
+                    <th mat-header-cell *matHeaderCellDef>{{"Action" | translate}}</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <button mat-button (click)="editProvince(element,content)" class="edit_btn">
+                            <img src="assets/images/edit_icon.svg"
+                                onmouseover="this.src='assets/images/edit_hover_icon.svg'"
+                                onmouseout="this.src='assets/images/edit_icon.svg'">
+                        </button>
+                        <button mat-button (click)="deleteProvince(element.id)" class="dele_btn">
+                            <img src="assets/images/delete_icon.svg"
+                                onmouseover="this.src='assets/images/delete_hover_icon.svg'"
+                                onmouseout="this.src='assets/images/delete_icon.svg'">
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center" colspan="3">{{"No data found" | translate}}</td>
+                </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 25]" showFirstLastButtons></mat-paginator>
+
+        </div>
+    </div>
+</div>

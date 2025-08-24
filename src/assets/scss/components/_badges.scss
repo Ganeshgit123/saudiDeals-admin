@@ -1,0 +1,13 @@
+// Badge outlined variations
+@use '../variables' as *;
+@use '../mixins/badges' as *;
+
+@each $color, $value in $theme-colors {
+  .badge-outline#{$color} {
+    @include badge-outline-variatons($value);
+  }
+}
+
+.badge {
+  padding: 5px 5px 3px;
+}

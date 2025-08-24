@@ -1,0 +1,21 @@
+// Load your custom styles using @use
+@use './index' as *;
+
+// Bootstrap main SCSS
+@use 'bootstrap/scss/bootstrap.scss';
+
+// Booststrap functions and variables
+@use 'bootstrap/scss/functions';
+@use 'bootstrap/scss/variables';
+
+
+// Plugin styles
+// @import 'perfect-scrollbar/css/perfect-scrollbar.css';
+@import "highlight.js/styles/googlecode.css";
+// @import url("//at.alicdn.com/t/font_o5hd5vvqpoqiwwmi.css"); //(feather-font). github https://github.com/AT-UI/feather-font
+@import "../fonts/feather/style.css";
+@import "@mdi/font/css/materialdesignicons.min.css";
+@import 'animate.css/animate.min.css';
+@import "@ng-select/ng-select/themes/default.theme.css";
+// @import "metismenujs/scss/metismenujs";
+// @import "ngx-toastr/toastr";

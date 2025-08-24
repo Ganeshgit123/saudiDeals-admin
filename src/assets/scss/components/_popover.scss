@@ -1,0 +1,14 @@
+@use '../variables' as *;
+
+.popover {
+  border-color: $border-color;
+  box-shadow: $card-box-shadow;
+
+  .popover-header {
+    font-size: 14px;
+  }
+
+  .popover-body {
+    font-size: 13px;
+  }
+}

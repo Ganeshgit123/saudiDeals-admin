@@ -1,0 +1,535 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@include mat.core();
+
+// Plus imports for other components in your app.
+@font-face {
+  font-family: 'DroidKufi';
+  src: url('assets/fonts/DroidKufiRegular.ttf');
+}
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+// Define color palettes
+$primary: mat.m2-define-palette(mat.$m2-indigo-palette);
+$accent: mat.m2-define-palette(mat.$m2-indigo-palette);
+$warn: mat.m2-define-palette(mat.$m2-indigo-palette);
+
+$custom-typography: mat.m2-define-typography-config($font-family: '"Poppins", sans-serif');
+$custom-typography-ar: mat.m2-define-typography-config($font-family: 'DroidKufi');
+
+// Create the theme
+$theme: mat.m2-define-light-theme((color: (primary: $primary,
+        accent: $accent,
+        warn: $warn,
+      ),
+      typography: $custom-typography,
+    ));
+
+@include mat.all-component-themes($theme);
+
+$custom-theme: mat.m2-define-light-theme((typography: $custom-typography));
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html:lang(ar) {
+  font-family: 'DroidKufi' !important;
+}
+
+
+:root {
+  --main-color: #8FB641;
+  --main-dark-color: #316C3B;
+  --text-color: #646464;
+  --text-dark-color: #030202;
+  --text-light-color: #6E6E6E;
+  --form-color: #ababab;
+  --border-color: #d2d2d2;
+  --accord-color: #F3F3F3;
+  --white-color: #ffffff;
+  --black-color: #000000;
+  --heading-h1: 35px;
+  --heading-h2: 30px;
+  --heading-h3: 25px;
+  --heading-h4: 20px;
+  --heading-h5: 18px;
+  --heading-h6: 16px;
+  --para-size: 14px;
+  --small-size: 12px;
+  --v-small-size: 10px;
+  --font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+  font-size: var(--heading-h3) !important;
+}
+
+:root:lang(ar) {
+  --font-family: 'DroidKufi' !important;
+}
+
+.modal-dialog {
+  margin: 30px 20px 30px auto !important;
+}
+
+.modal.fade .modal-dialog {
+  transition: none !important;
+  animation: 3s slide-left;
+}
+
+@keyframes slide-left {
+  from {
+    margin-left: 100%;
+  }
+
+  to {
+    margin-left: 0%;
+  }
+}
+
+.mat-table:lang(ar),
+.mat-form-field:lang(ar),
+.mat-button:lang(ar),
+.mat-paginator:lang(ar),
+.mat-tab-label:lang(ar),
+.mat-tab-group:lang(ar) {
+  font-family: 'DroidKufi' !important;
+}
+
+.mat-h4:lang(ar),
+.mat-subheading-1:lang(ar),
+.mat-typography .mat-h4:lang(ar),
+.mat-typography .mat-subheading-1:lang(ar),
+.mat-typography h4:lang(ar) {
+  font-family: 'DroidKufi' !important;
+}
+
+.mat-h6:lang(ar),
+.mat-typography .mat-h6:lang(ar),
+.mat-typography h6:lang(ar) {
+  font-family: 'DroidKufi' !important;
+}
+
+.mat-h2:lang(ar),
+.mat-typography .mat-h2:lang(ar),
+.mat-typography h2:lang(ar) {
+  font-family: 'DroidKufi' !important;
+}
+
+.mat-h5:lang(ar),
+.mat-typography .mat-h5:lang(ar),
+.mat-typography h5:lang(ar) {
+  font-family: 'DroidKufi' !important;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family) !important;
+}
+
+body:lang(ar) {
+  font-family: 'DroidKufi' !important;
+  text-align: right !important;
+}
+
+.mat-tab-label,
+.mat-tab-link,
+.mat-tab-group {
+  color: var(--black-color) !important;
+  opacity: 1 !important;
+}
+
+.apexcharts-legend-text {
+  font-family: var(--font-family) !important;
+  font-size: 14px !important;
+}
+
+.apexcharts-legend-text:lang(ar) {
+  font-family: 'DroidKufi' !important;
+  font-size: 12px !important;
+}
+
+.apexcharts-legend-marker:lang(ar) {
+  margin-left: 3px !important;
+}
+
+.multiselect-dropdown .dropdown-btn {
+  border: 1px solid #e2e5ed !important;
+}
+
+.export_btn {
+  background: var(--main-color);
+  color: var(--black-color);
+  border: none;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  position: relative;
+  top: 20px;
+}
+
+.exp_btn_righ {
+  text-align: right;
+}
+
+.exp_btn_righ:lang(ar) {
+  text-align: left;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: #e1e1e1;
+  height: 4px !important;
+}
+
+.mat-h2,
+.mat-title,
+.mat-typography .mat-h2,
+.mat-typography .mat-title,
+.mat-typography h2,
+.mat-h6,
+.mat-typography .mat-h6,
+.mat-typography h6 {
+  margin-bottom: 0 !important;
+}
+
+.mat-h5,
+.mat-typography .mat-h5,
+.mat-typography h5 {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  margin-bottom: 0 !important;
+}
+
+.text_error {
+  color: red;
+}
+
+table {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.wrapper {
+  margin-top: 20px !important;
+}
+
+th.mat-sort-header-sorted {
+  color: var(--black-color);
+}
+
+th.mat-header-cell {
+  border: none !important;
+}
+
+tr.mat-header-row {
+  background: #ffffff !important;
+  border-radius: 10px;
+  height: 40px !important;
+}
+
+.mat-header-cell {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--black-color) !important;
+}
+
+tr.mat-row {
+  background: #ffffff !important;
+  margin-top: 10px !important;
+  height: 40px !important;
+}
+
+td.mat-cell {
+  border-top: none !important;
+  padding: 0px 15px 0px 15px !important;
+  color: #666666 !important;
+  font-weight: 500;
+  border-bottom: none !important;
+}
+
+th.mat-header-cell {
+  padding: 5px 15px 5px 15px !important;
+}
+
+.table thead th {
+  text-transform: capitalize !important;
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+.btn-own {
+  border: 2px solid var(--main-color) !important;
+  color: var(--main-color) !important;
+  padding: 5px 20px !important;
+  margin-right: 20px;
+  border-radius: 10px !important;
+}
+
+.btn-own:lang(ar) {
+  margin-left: 20px;
+  margin-right: auto;
+}
+
+.btn-own:hover {
+  background: var(--main-color) !important;
+  color: var(--white-color) !important;
+}
+
+select.form-control {
+  color: #000000 !important;
+}
+
+.edit_btn {
+  background: none;
+  border: none !important;
+  padding: 10px 20px;
+  width: 58px;
+}
+
+.dele_btn {
+  background: none;
+  border: none !important;
+  padding: 0px 20px;
+  width: 58px;
+}
+
+.view_btn {
+  background: #37A037;
+  color: var(--white-color) !important;
+  border: none !important;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+.red_btn {
+  background: #B51E1E;
+  color: var(--white-color) !important;
+  border: none !important;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+.switch {
+  position: relative;
+  border: none;
+  height: 1rem;
+  width: 2.5rem;
+  border-radius: 2.5rem;
+  background: transparent;
+  margin-bottom: 0 !important;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #F21C471F;
+  -webkit-transition: .5s;
+  transition: .5s;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #F21C47;
+  border-radius: 1.125rem;
+  -webkit-transition: .5s;
+  transition: .5s;
+  right: 4px;
+  top: 3px;
+}
+
+input:checked+.slider {
+  background-color: #00C8531F;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 0;
+}
+
+input:checked+.slider:before {
+  background: #00C853;
+  left: 4px;
+  position: absolute;
+  right: 0;
+}
+
+.tog_btn {
+  background: transparent;
+  border: none;
+}
+
+.add_popup_btn {
+  position: relative;
+  top: 1.5rem;
+}
+
+textarea {
+  resize: vertical !important;
+  line-height: 1.2 !important;
+}
+
+.img_upload {
+  text-align: center;
+}
+
+.img_size {
+  width: 300px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.custom-file-input {
+  display: none;
+}
+
+.upload-img {
+  width: 300px;
+  height: 300px;
+  cursor: pointer;
+}
+
+.del_btn {
+  margin-left: 2rem;
+  margin-top: 3rem;
+}
+
+.del_btn:lang(ar) {
+  margin-right: 2rem;
+  margin-left: auto;
+}
+
+.mat-elevation-z8 {
+  overflow-x: auto;
+  box-shadow: none;
+}
+
+.mat-tab-body-content {
+  overflow: hidden !important;
+}
+
+select.form-control,
+.ng-select select.ng-select-container,
+select {
+  color: var(--black-color) !important;
+}
+
+.btn-own-cancel {
+  background: #6F6F6F1D !important;
+}
+
+.btn-own-cancel:hover {
+  background: var(--black-color) !important;
+  color: var(--white-color) !important;
+}
+
+.sidebar-folded .page-wrapper:lang(ar) {
+  margin-right: 70px !important;
+}
+
+.sidebar-folded .page-wrapper .navbar:lang(ar) {
+  right: 70px !important;
+}
+
+.sidebar-folded .sidebar .sidebar-body .sidebar-nav .nav-item.mm-active>.nav-link::before {
+  display: none;
+}
+
+.sidebar .sidebar-body .sidebar-nav .nav-item>.nav-link:lang(ar) {
+  padding-right: 10px !important;
+  padding-left: auto;
+}
+
+[dir=rtl] th.mat-header-cell {
+  text-align: center !important;
+}
+
+.mat-column-description {
+  max-width: 200px;
+  /* feel free to include any other value */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-column-description:hover {
+  cursor: pointer;
+  color: var(--main-color) !important;
+}
+
+.mat-tab-header {
+  border-bottom: none !important;
+}
+
+.mat-tab-label-active {
+  background: var(--main-color) !important;
+  color: var(--white-color) !important;
+}
+
+.des_p {
+  padding: 5px 10px;
+  margin-bottom: 0 !important;
+}
+
+.btn-primary {
+  background: var(--main-color) !important;
+  border-color: var(--main-color) !important;
+}
+
+.navbar {
+  width: 100% !important;
+  left: 0 !important;
+}
+
+.rtl .main-wrapper .page-wrapper .navbar {
+  right: 0 !important;
+}
+
+.main-wrapper .page-wrapper .page-content {
+  margin-top: 20px !important;
+}
+
+.table th,
+.table td {
+  vertical-align: middle !important;
+  padding: 0 0.75rem !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: inherit !important;
+}
+
+.card .card-body {
+  padding: 1rem 1.5rem !important;
+}
+
+.riyal_logo_size {
+  width: 13px;
+  direction: rtl !important;
+}
