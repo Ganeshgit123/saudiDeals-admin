@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,6 +26,7 @@ export class TrimComponent implements OnInit {
   submitted = false;
   makeList = [];
   modelList = [];
+  allModels = [];
   getTrimList = [];
 
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
@@ -74,6 +76,13 @@ export class TrimComponent implements OnInit {
       }
     );
 
+    // Preload all models to avoid the first-selection race condition
+    this.authService.getModel("CAR").subscribe(
+      (res: any) => {
+        this.allModels = res.data.sort((a, b) => (a.modelName || '').localeCompare(b.modelName || ''));
+      }
+    );
+
   }
 
   get trimf() { return this.trimForm.controls; }
@@ -96,12 +105,16 @@ export class TrimComponent implements OnInit {
   }
 
   onModelChange(value) {
+    // Use cached models when available to prevent the first-time API race
+    if (this.allModels && this.allModels.length) {
+      this.modelList = this.allModels.filter((obj) => obj.brandId == value);
+      return;
+    }
+
     this.authService.getModel("CAR").subscribe(
       (res: any) => {
-        const modelArray = res.data.sort((a, b) => a.name?.localeCompare(b.name));
-        this.modelList = modelArray.filter((obj) => {
-          return obj.brandId == value;
-        });
+        const modelArray = res.data.sort((a, b) => (a.modelName || '').localeCompare(b.modelName || ''));
+        this.modelList = modelArray.filter((obj) => obj.brandId == value);
       }
     );
   }
@@ -112,7 +125,7 @@ export class TrimComponent implements OnInit {
         const modelArray = res.data;
         modelArray.forEach(element => {
           if (value == element.enName) {
-            this.trimForm.value.arName = element.arName;
+            this.trimForm.patchValue({ arName: element.arName });
           }
         });
       }
@@ -122,6 +135,28 @@ export class TrimComponent implements OnInit {
   openModal(content) {
     this.trimForm.reset();
     this.isEdit = false;
+
+    // If makes or models aren't loaded yet, load them first then open modal
+    if ((!this.makeList || !this.makeList.length) || (!this.allModels || !this.allModels.length)) {
+      const makes$ = this.authService.getMakes('CAR');
+      const models$ = this.authService.getModel('CAR');
+      forkJoin([makes$, models$]).subscribe((results: any) => {
+        try {
+          const makesRes = results[0];
+          const modelsRes = results[1];
+          this.makeList = (makesRes && makesRes.data) ? makesRes.data.sort((a, b) => a.name.localeCompare(b.name)) : [];
+          this.allModels = (modelsRes && modelsRes.data) ? modelsRes.data.sort((a, b) => (a.modelName || '').localeCompare(b.modelName || '')) : [];
+        } catch (e) {
+          // ignore and open modal anyway
+        }
+        this.modalService.open(content, { centered: true });
+      }, () => {
+        // on error, still open modal so user can retry
+        this.modalService.open(content, { centered: true });
+      });
+      return;
+    }
+
     this.modalService.open(content, { centered: true });
   }
 
@@ -135,6 +170,16 @@ export class TrimComponent implements OnInit {
       arName: [data['arName']],
       enName: [data['enName']],
     });
+    // ensure model list for the selected make is available when editing
+    if (this.allModels && this.allModels.length) {
+      this.modelList = this.allModels.filter((obj) => obj.brandId == data['makeId']);
+    } else {
+      // fallback: fetch models for the first time
+      this.authService.getModel("CAR").subscribe((res: any) => {
+        this.allModels = res.data.sort((a, b) => (a.modelName || '').localeCompare(b.modelName || ''));
+        this.modelList = this.allModels.filter((obj) => obj.brandId == data['makeId']);
+      });
+    }
   }
 
   onSubmitData() {
